@@ -10,11 +10,13 @@ import { showError } from "../../../Assets/Constants/showNotifier";
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import TabDetails from "./TabDetails";
 import MediaCard from "./MediaCard";
+import { appUrl } from "../../../Assets/Constant";
 
 const tabLabels = ["All", "Images", "Videos"];
 const skeletons = [1,2,3,4,5,6,7,8,9,0];
 export default function ProductList() {
   const dispatch = useDispatch();
+  const user = useSelector((state)=>state.user.user);
   const { data: mediaList, isLoading, error } = useSelector((state) => state.media);
   const [openAddProduct, setOpenAddProduct] = useState(false);
   const [validError, setValidError] = useState('');
@@ -28,7 +30,7 @@ export default function ProductList() {
   }, [dispatch]);
 
 
-  console.log("isLoadingisLoading",isLoading);
+  console.log("isLoadingisLoading",user);
 
   const handleSubmit = async () => {
     if(!newMedia.title){
@@ -68,6 +70,7 @@ export default function ProductList() {
 
   return (
     <Box maxWidth={"1200px"} p={3}>
+      <Typography textAlign={'center'} mb={2} variant="h5" color="#0c831f"><b>Welcome {user.name}</b></Typography>
       <Box display={"flex"} justifyContent={"space-between"} mb={2}>
         <Typography variant="h5" color="#02cfac"><b>Your Media List</b></Typography>
         <Box>
@@ -138,7 +141,7 @@ export default function ProductList() {
                             >
                             <Box
                               sx={{
-                                backgroundImage: `url(http://localhost:8000${media.mediaUrl})`,
+                                backgroundImage: `url(${appUrl}${media.mediaUrl})`,
                                 backgroundSize: "contain", 
                                 backgroundRepeat: "no-repeat",
                                 backgroundPosition: "center", 
@@ -171,7 +174,7 @@ export default function ProductList() {
                               }}
                             >
                               <video width="100%" controls>
-                                <source src={`http://localhost:8000${media.mediaUrl}`} type="video/mp4" />
+                                <source src={`${appUrl}${media.mediaUrl}`} type="video/mp4" />
                                   Your browser does not support the video tag.
                               </video>
                             </Box>

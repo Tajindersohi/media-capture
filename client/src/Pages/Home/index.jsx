@@ -11,25 +11,31 @@ export default function Home() {
   const user = useSelector((state)=>state.user.user);
   const [data, setData] = useState({
         email: "",
+        name: "",
         password: "",
         number: "",
         role: "user", 
     });
     const [errors, setErrors] = useState({
         email: "",
+        name: "",
         password: "",
         number: "",
     });
     const handleReset = () => {setData({
         email: "",
+        name: "",
         password: "",
         number: "",
         role: "user", 
     })}
 
     const handleChange = (key, val) => {
+        if(key == 'number' && val.length > 10){
+            return;
+        }
         setData((prev) => ({ ...prev, [key]: val }));
-        setErrors((prev) => ({ ...prev, [key]: "" })); // Clear errors on input change
+        setErrors((prev) => ({ ...prev, [key]: "" })); 
     };
 
     const validateEmail = (email) => {
@@ -41,9 +47,9 @@ export default function Home() {
     };
 
     const handleSubmit = async () => {
-        const { email, password, number, role } = data;
+        const { email, password, number, role, name } = data;
         let valid = true;
-        let newErrors = { email: "", password: "", number: "" };
+        let newErrors = { email: "", password: "", number: "", name:"" };
 
         if (!email) {
             newErrors.email = "Email is required";
@@ -57,8 +63,13 @@ export default function Home() {
             newErrors.password = "Password is required";
             valid = false;
         }
-
+        
         if (mode === "register") {
+            
+            if (!name) {
+                newErrors.name = "Name is required";
+                valid = false;
+            }
             if (!number) {
                 newErrors.number = "Phone number is required";
                 valid = false;
@@ -76,7 +87,7 @@ export default function Home() {
         if (mode === "register") {
             if (!number) return showError("Phone number is required");
 
-            const userData = { email, password, number, role };
+            const userData = { email, password, number, role, name };
             await dispatch(createUser(userData)); // Call register API here
         } else {
             const credentials = { email, password };
@@ -113,6 +124,20 @@ export default function Home() {
                 </Typography>
                <Box fullWidth>
                     <Grid container spacing={2}>
+                        {mode === "register" && (
+                            <Grid item xs={12}>
+                                <FormControl fullWidth error={!!errors.email}>
+                                    <InputLabel>Name</InputLabel>
+                                    <OutlinedInput
+                                        value={data.name}
+                                        onChange={(e) => handleChange('name', e.target.value)}
+                                        label="Name"
+                                        type='name'
+                                    />
+                                    {errors.name && <FormHelperText>{errors.name}</FormHelperText>}
+                                </FormControl>
+                            </Grid>
+                        )}
                         <Grid item xs={12}>
                             <FormControl fullWidth error={!!errors.email}>
                                 <InputLabel>Email</InputLabel>

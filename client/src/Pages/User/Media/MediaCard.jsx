@@ -1,7 +1,9 @@
 import { Box, Typography } from "@mui/material";
+import { appUrl } from "../../../Assets/Constant";
 
 export default function MediaCard({ media,  mediaType="image" }) {
-  return (
+  console.log("appUrlappUrl",appUrl);
+  return ( 
     <Box
       sx={{
         position: "relative",
@@ -15,7 +17,7 @@ export default function MediaCard({ media,  mediaType="image" }) {
 
       <Box
         sx={{
-          backgroundImage: `url(http://localhost:8000${media.mediaUrl})`,
+          backgroundImage: `url(${appUrl}${media.mediaUrl})`,
           backgroundSize: "contain",
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
@@ -33,7 +35,7 @@ export default function MediaCard({ media,  mediaType="image" }) {
             }}
             >
             <video width="100%" controls>
-                <source src={`http://localhost:8000${media.mediaUrl}`} type="video/mp4" />
+                <source src={`${appUrl}${media.mediaUrl}`} type="video/mp4" />
                 Your browser does not support the video tag.
             </video>
         </Box>

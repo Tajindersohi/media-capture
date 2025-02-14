@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 require("dotenv").config();
 const createUser = async (req, res) => {
-    const { email, password, number, role } = req.body;
+    const { email, password, number, role, name } = req.body;
     try {
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -12,7 +12,7 @@ const createUser = async (req, res) => {
         }
 
         // Create and save new user
-        const user = new User({ email, password, number, role });
+        const user = new User({ email, password, number, role, name });
         await user.save();
 
         res.status(201).json({ message: 'User registered successfully' });
