@@ -4,22 +4,12 @@ const app = express();
 const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
-
-// Enable CORS
-app.use(
-  cors({
-    origin: process.env.REACT_APP_URL || "http://localhost:3000",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
-// Middleware
 app.use(express.json());
+
+app.use(cors({ origin: '*' }));
 
 // Determine Upload Directory Based on Environment
 const uploadDir = process.env.NODE_ENV === "production" ? "/tmp/uploads" : path.join(__dirname, "./uploads");
-console.log(process.env.NODE_ENV);
 // Ensure Upload Directory Exists
 try {
   if (!fs.existsSync(uploadDir)) {
@@ -51,6 +41,6 @@ const start = async () => {
 };
 
 start();
-
 // API Routes
 app.use("/api", routes);
+// module.exports = app;

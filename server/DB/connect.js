@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 
 const connectDB = () => {
-    return mongoose.connect(process.env.CONNECTION_STRING,{
-        useNewUrlParser: true,
-        useUnifiedTopology : true,
-    });
+    return mongoose.connect(process.env.CONNECTION_STRING)
+    .then(() => console.log("MongoDB Connected",process.env.CONNECTION_STRING))
+    .catch(err => console.error("MongoDB Connection Error:", err));
+
 }
 
 
