@@ -17,6 +17,7 @@ const apiConstants = {
         login: async (data) => await axiosInstance.post('/login',data),
         registerUser: async (data) => await axiosInstance.post('user/register', data),
         getMe: async () => await axiosInstance.post('/me'),
+        changePassword: async (data) => await axiosInstance.post('/change-password',data),
     },
     upload:{
         media: async (data) => await axiosInstance.post('/upload-media',data),

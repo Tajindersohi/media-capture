@@ -96,21 +96,21 @@ export default function Home() {
         handleReset();
         setMode('login')
     };
-
-
-    useEffect(()=>{
-        if(user) navigate('/user-media') 
-    },[user])
     
     return (
         <Box 
             sx={{ 
                 display: 'flex', 
+                flexDirection: 'column', 
                 justifyContent: 'center', 
                 alignItems: 'center', 
                 height: '100vh', 
+                gap:1
             }}
         >
+        <Typography textAlign={'center'} mb={2} variant="h4" color="#0c831f"><b>Welcome to Media Uploader</b></Typography>
+        <Typography textAlign={'center'} mb={2} variant="h6">Please login or register to continue</Typography>
+            
             <Paper 
                 elevation={3} 
                 sx={{ 

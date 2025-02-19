@@ -37,8 +37,5 @@ export default function LoadingIndicatorProvider({ children }) {
 // Custom hook to use LoadingContext
 export const useLoading = () => {
   const context = useContext(LoadingContext);
-  if (!context) {
-    throw new Error('useLoading must be used within a LoadingIndicatorProvider');
-  }
   return context;
 };

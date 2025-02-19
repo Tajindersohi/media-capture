@@ -1,45 +1,38 @@
-import React, { Suspense, lazy } from "react";
-import { Routes, Route, Outlet, Navigate } from "react-router-dom";
+import React, { Suspense, lazy, useEffect, useState } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import LoadingIndicator from "../Components/Common/LoadingIndicator";
 import PrivateRoute from "./PrivateRoutes";
-import { useSelector } from "react-redux";
-import Logout from "../Pages/User/Logout/Logout";
+import { getMe } from "../store/redux/thunks"; // Fetch user details
 
 const Home = lazy(() => import("../Pages/Home"));
 const NotFound = lazy(() => import("../Pages/NotFound"));
 const MediaList = lazy(() => import("../Pages/User/Media"));
+const Logout = lazy(() => import("../Pages/User/Logout/Logout"));
+const MyAccount = lazy(() => import("../Pages/User/MyAccount"));
 
 const AppRoutes = () => {
-    const user = useSelector((state)=>state.user.user);
-    console.log("useruser",user);
-    const commonRoutes = () => (
-        <>
-            <Route
-                element={user  ? <Navigate to="/user-media" replace /> : <Outlet />}
-            >
-                <Route path="/" element={<Home />} />
-            </Route>
-            <Route path="*" element={<NotFound />} />
-        </>
-    );
+    const dispatch = useDispatch();
+    const user = useSelector((state) => state.user);
 
-    const userRoutes = () => (
-        <>
-            <Route path="/user-media" element={<MediaList />} />
-            <Route path="/logout" element={<Logout />} />
-        </>
-    );
+    useEffect(() => {
+        dispatch(getMe())
+    }, [dispatch]);
 
     return (
         <Suspense fallback={<LoadingIndicator />}>
             <Routes>
-                {/* Private Routes - Requires Authentication */}
+                <Route path="/" element={user?.user ? <Navigate to="/user-account" replace /> : <Home />} />
+
+                {/* Private Routes */}
                 <Route element={<PrivateRoute />}>
-                    {userRoutes()}
+                    <Route path="/user-media" element={<MediaList />} />
+                    <Route path="/user-account" element={<MyAccount />} />
+                    <Route path="/logout" element={<Logout />} />
                 </Route>
 
-                {/* Public Routes */}
-                {commonRoutes()}
+                {/* Catch-all route */}
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </Suspense>
     );

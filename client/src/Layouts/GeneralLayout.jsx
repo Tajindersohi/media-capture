@@ -18,15 +18,16 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import icons from '../Assets/Icons/Icons';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 const drawerWidth = 220;
 
 export default function GeneralLayout({ children }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
-  console.log("handle",location);
 
   const menuItems = [
+    { name: 'My Account', route: '/user-account', icon: <AccountBoxIcon /> },
     { name: 'Media', route: '/user-media', icon: <InventoryIcon /> },
     { name: 'Logout', route: '/logout', icon: <ExitToAppIcon /> },
   ];

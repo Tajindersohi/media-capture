@@ -3,6 +3,7 @@ const multer = require("multer");
 const { uploadMedia, getMediaList } = require("../controllers/media");
 const path = require("path");
 const fs = require("fs");
+const { put } = require("@vercel/blob");
 
 const router = express.Router();
 
@@ -40,6 +41,23 @@ const upload = multer({
 });
 
 router.post("/upload", upload.single("media"), uploadMedia);
+// router.post("/upload", upload.single("media"), async (req, res) => {
+//   try {
+//     if (!req.file) {
+//       return res.status(400).json({ error: "No file uploaded" });
+//     }
+
+//     // Upload to Vercel Blob
+//     const blob = await put(`uploads/${Date.now()}-${req.file.originalname}`, req.file.buffer, {
+//       access: "public",
+//     });
+
+//     res.status(200).json({ url: blob.url });
+//   } catch (error) {
+//     console.error("Upload Error:", error);
+//     res.status(500).json({ error: "Upload failed" });
+//   }
+// });
 router.get("/list", getMediaList);
 
 module.exports = router;

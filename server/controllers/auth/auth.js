@@ -22,6 +22,29 @@ const createUser = async (req, res) => {
     }
 };
 
+const changePassword = async (req, res) => {
+    const { _id, oldPassword, newPassword } = req.body.credentials; // Fixed typo in "newPassword"
+
+    try {
+        const existingUser = await User.findById(_id);
+        if (!existingUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        const isMatch = await bcrypt.compare(oldPassword, existingUser.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Password is incorrect' });
+        }
+        existingUser.password = newPassword;
+        await existingUser.save();
+
+        res.status(200).json({ message: 'Password updated successfully' });
+    } catch (err) {
+        console.error('Change password error:', err);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 const handleUserLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -59,4 +82,4 @@ const handleGetMe = async (req, res) => {
    }
 };
 
-module.exports = { createUser, handleUserLogin,  handleGetMe };
+module.exports = { createUser, handleUserLogin,  handleGetMe, changePassword };

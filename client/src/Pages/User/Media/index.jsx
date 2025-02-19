@@ -70,7 +70,6 @@ export default function ProductList() {
 
   return (
     <Box maxWidth={"1200px"} p={3}>
-      <Typography textAlign={'center'} mb={2} variant="h5" color="#0c831f"><b>Welcome {user.name}</b></Typography>
       <Box display={"flex"} justifyContent={"space-between"} mb={2}>
         <Typography variant="h5" color="#02cfac"><b>Your Media List</b></Typography>
         <Box>
